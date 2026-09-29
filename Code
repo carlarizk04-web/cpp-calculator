@@ -1,0 +1,312 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <limits>
+
+using namespace std;
+
+// Store a calculation in the history
+vector<string> history;
+
+// Clear the input buffer
+void clearInput() {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
+
+// Pause the program
+void pauseProgram() {
+    cout << "\nPress Enter to continue...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.get();
+}
+
+// Display the main menu
+void showMenu() {
+    cout << "\n========================================\n";
+    cout << "          SMART CALCULATOR\n";
+    cout << "========================================\n";
+    cout << "1. Basic Calculation\n";
+    cout << "2. Power\n";
+    cout << "3. Square Root\n";
+    cout << "4. Percentage\n";
+    cout << "5. View History\n";
+    cout << "6. Clear History\n";
+    cout << "0. Exit\n";
+    cout << "========================================\n";
+}
+
+// Basic calculations
+void basicCalculation() {
+    double num1, num2, result;
+    char operation;
+
+    cout << "\n========== BASIC CALCULATION ==========\n";
+
+    cout << "Enter first number: ";
+    while (!(cin >> num1)) {
+        cout << "Invalid input. Please enter a number: ";
+        clearInput();
+    }
+
+    cout << "Enter operation (+, -, *, /): ";
+    cin >> operation;
+
+    while (operation != '+' &&
+           operation != '-' &&
+           operation != '*' &&
+           operation != '/') {
+
+        cout << "Invalid operation. Please enter +, -, * or /: ";
+        cin >> operation;
+    }
+
+    cout << "Enter second number: ";
+    while (!(cin >> num2)) {
+        cout << "Invalid input. Please enter a number: ";
+        clearInput();
+    }
+
+    switch (operation) {
+
+        case '+':
+            result = num1 + num2;
+
+            cout << "\nResult: " << result << endl;
+
+            history.push_back(
+                to_string(num1) + " + " +
+                to_string(num2) + " = " +
+                to_string(result)
+            );
+            break;
+
+        case '-':
+            result = num1 - num2;
+
+            cout << "\nResult: " << result << endl;
+
+            history.push_back(
+                to_string(num1) + " - " +
+                to_string(num2) + " = " +
+                to_string(result)
+            );
+            break;
+
+        case '*':
+            result = num1 * num2;
+
+            cout << "\nResult: " << result << endl;
+
+            history.push_back(
+                to_string(num1) + " * " +
+                to_string(num2) + " = " +
+                to_string(result)
+            );
+            break;
+
+        case '/':
+            if (num2 == 0) {
+                cout << "\nError: Cannot divide by zero!\n";
+                return;
+            }
+
+            result = num1 / num2;
+
+            cout << "\nResult: " << result << endl;
+
+            history.push_back(
+                to_string(num1) + " / " +
+                to_string(num2) + " = " +
+                to_string(result)
+            );
+            break;
+    }
+}
+
+// Power calculation
+void powerCalculation() {
+    double base, exponent, result;
+
+    cout << "\n============= POWER =============\n";
+
+    cout << "Enter base: ";
+    while (!(cin >> base)) {
+        cout << "Invalid input. Please enter a number: ";
+        clearInput();
+    }
+
+    cout << "Enter exponent: ";
+    while (!(cin >> exponent)) {
+        cout << "Invalid input. Please enter a number: ";
+        clearInput();
+    }
+
+    result = pow(base, exponent);
+
+    cout << "\nResult: " << result << endl;
+
+    history.push_back(
+        to_string(base) + " ^ " +
+        to_string(exponent) + " = " +
+        to_string(result)
+    );
+}
+
+// Square root calculation
+void squareRootCalculation() {
+    double number, result;
+
+    cout << "\n========== SQUARE ROOT ==========\n";
+
+    cout << "Enter a number: ";
+
+    while (!(cin >> number)) {
+        cout << "Invalid input. Please enter a number: ";
+        clearInput();
+    }
+
+    if (number < 0) {
+        cout << "\nError: Cannot calculate the square root of a negative number.\n";
+        return;
+    }
+
+    result = sqrt(number);
+
+    cout << "\nSquare root of " << number
+         << " = " << result << endl;
+
+    history.push_back(
+        "sqrt(" + to_string(number) + ") = " +
+        to_string(result)
+    );
+}
+
+// Percentage calculation
+void percentageCalculation() {
+    double number, percentage, result;
+
+    cout << "\n========== PERCENTAGE ==========\n";
+
+    cout << "Enter number: ";
+
+    while (!(cin >> number)) {
+        cout << "Invalid input. Please enter a number: ";
+        clearInput();
+    }
+
+    cout << "Enter percentage: ";
+
+    while (!(cin >> percentage)) {
+        cout << "Invalid input. Please enter a percentage: ";
+        clearInput();
+    }
+
+    result = (number * percentage) / 100;
+
+    cout << "\n" << percentage << "% of "
+         << number << " = " << result << endl;
+
+    history.push_back(
+        to_string(percentage) + "% of " +
+        to_string(number) + " = " +
+        to_string(result)
+    );
+}
+
+// Display calculation history
+void showHistory() {
+
+    cout << "\n============== HISTORY ==============\n";
+
+    if (history.empty()) {
+        cout << "No calculations have been made yet.\n";
+    }
+    else {
+        for (int i = 0; i < history.size(); i++) {
+            cout << i + 1 << ". " << history[i] << endl;
+        }
+    }
+
+    cout << "=====================================\n";
+}
+
+// Clear calculation history
+void clearHistory() {
+
+    if (history.empty()) {
+        cout << "\nHistory is already empty.\n";
+    }
+    else {
+        history.clear();
+        cout << "\nCalculation history has been cleared.\n";
+    }
+}
+
+// Main function
+int main() {
+
+    int choice;
+
+    cout << "========================================\n";
+    cout << "      WELCOME TO SMART CALCULATOR\n";
+    cout << "========================================\n";
+
+    do {
+
+        showMenu();
+
+        cout << "Enter your choice: ";
+
+        while (!(cin >> choice)) {
+            cout << "Invalid input. Please enter a number: ";
+            clearInput();
+        }
+
+        switch (choice) {
+
+            case 1:
+                basicCalculation();
+                pauseProgram();
+                break;
+
+            case 2:
+                powerCalculation();
+                pauseProgram();
+                break;
+
+            case 3:
+                squareRootCalculation();
+                pauseProgram();
+                break;
+
+            case 4:
+                percentageCalculation();
+                pauseProgram();
+                break;
+
+            case 5:
+                showHistory();
+                pauseProgram();
+                break;
+
+            case 6:
+                clearHistory();
+                pauseProgram();
+                break;
+
+            case 0:
+                cout << "\nThank you for using Smart Calculator!\n";
+                cout << "Goodbye!\n";
+                break;
+
+            default:
+                cout << "\nInvalid choice. Please select from 0 to 6.\n";
+                pauseProgram();
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
